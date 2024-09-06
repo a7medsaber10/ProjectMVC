@@ -1,4 +1,6 @@
-﻿using ProjectMVC.BLL.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectMVC.BLL.Interfaces;
+using ProjectMVC.DAL.Data.Contexts;
 using ProjectMVC.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -10,29 +12,41 @@ namespace ProjectMVC.BLL.Repositories
 {
     public class DepartmentRepository : IDepartmentRepository
     {
-        public int Add(Department department)
+        // readony --> prevent making instanse from dbContext in any method manually 
+        private readonly AppDbContext _dbContext; // NULL
+
+        public DepartmentRepository(AppDbContext dbContext) // Ask CLR for creating object from DbContext
         {
-            throw new NotImplementedException();
+            //_dbContext = new AppDbContext(); // With this line the exception is ended
+            _dbContext = dbContext;
         }
 
-        public int Delete(int id)
+        public int Add(Department department)
         {
-            throw new NotImplementedException();
+            _dbContext.Departments.Add(department); // null reference exception
+            return _dbContext.SaveChanges(); // will make sql script for all changes 
+        }
+
+        public int Delete(Department department)
+        {
+            _dbContext.Departments.Remove(department);
+            return _dbContext.SaveChanges();
         }
 
         public IEnumerable<Department> GetAll()
         {
-            throw new NotImplementedException();
+            return _dbContext.Departments.AsNoTracking().ToList();
         }
 
         public Department GetById(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.Departments.Find(id);
         }
 
         public int Update(Department department)
         {
-            throw new NotImplementedException();
+            _dbContext.Departments.Update(department);
+            return _dbContext.SaveChanges();
         }
     }
 }

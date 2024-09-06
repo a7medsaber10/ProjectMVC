@@ -17,6 +17,6 @@ namespace ProjectMVC.BLL.Interfaces
 
         int Update(Department department);
 
-        int Delete(int id);
+        int Delete(Department department);
     }
 }

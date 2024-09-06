@@ -11,10 +11,15 @@ namespace ProjectMVC.DAL.Data.Contexts
     public class AppDbContext : DbContext
     {
         public DbSet<Department> Departments { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
         {
-            optionsBuilder.UseSqlServer("Server = .; Database = ProjectMVC; Trusted_Connection = True");
+            
         }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server = .; Database = ProjectMVC; Trusted_Connection = True");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
