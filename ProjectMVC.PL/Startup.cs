@@ -33,7 +33,7 @@ namespace ProjectMVC.PL
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer("Server = .; Database = ProjectMVC; Trusted_Connection = True");
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             }); // Default --> Scoped
         }
 
