@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectMVC.DAL.Data.Contexts
+namespace ProjectMVC.DAL.Data
 {
     public class AppDbContext : DbContext
     {
         public DbSet<Department> Departments { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
+
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

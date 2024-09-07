@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectMVC.BLL.Interfaces;
-using ProjectMVC.DAL.Data.Contexts;
+using ProjectMVC.DAL.Data;
 using ProjectMVC.DAL.Models;
 using System;
 using System.Collections.Generic;
