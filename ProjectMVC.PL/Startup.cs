@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectMVC.BLL.Interfaces;
+using ProjectMVC.BLL.Repositories;
 using ProjectMVC.DAL.Data;
 using System;
 using System.Collections.Generic;
@@ -35,6 +37,8 @@ namespace ProjectMVC.PL
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             }); // Default --> Scoped
+
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
