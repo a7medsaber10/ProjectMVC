@@ -22,8 +22,8 @@ namespace ProjectMVC.PL.Controllers
         public IActionResult Index()
         {
             // GetAll
-            _departmentRepository.GetAll();
-            return View();
+            var department =_departmentRepository.GetAll();
+            return View(department);
         }
     }
 }

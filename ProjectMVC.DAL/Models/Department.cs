@@ -15,8 +15,8 @@ namespace ProjectMVC.DAL.Models
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Code Is Required!")]
-        public string Name { get; set; } 
-
+        public string Name { get; set; }
+        [Display(Name = "Date Of Creation")]
         public DateTime DateOfCreation { get; set; }
     }
 }
