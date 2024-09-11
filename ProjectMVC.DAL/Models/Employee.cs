@@ -20,10 +20,8 @@ namespace ProjectMVC.DAL.Models
         FullTime = 1,
         PartTime = 2
     }
-    public class Employee
+    public class Employee : ModelBase
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "Name is Required!")]
         [MaxLength(50, ErrorMessage = "Max Length of the name is 50")]
         [MinLength(3, ErrorMessage = "Min Length of the name is 4")]
@@ -55,6 +53,6 @@ namespace ProjectMVC.DAL.Models
 
         public Gender Gender { get; set; }
 
-        public EmployeeType EmployeeType { get; set; }
+        //public EmployeeType EmployeeType { get; set; }
     }
 }

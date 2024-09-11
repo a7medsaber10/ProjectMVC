@@ -10,43 +10,19 @@ using System.Threading.Tasks;
 
 namespace ProjectMVC.BLL.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee>, IEmployeeRepository
     {
         // readony --> prevent making instanse from dbContext in any method manually 
-        private readonly AppDbContext _dbContext; // NULL
+        //private protected readonly AppDbContext _dbContext; // NULL
 
-        public EmployeeRepository(AppDbContext dbContext) // Ask CLR for creating object from DbContext
+        public EmployeeRepository(AppDbContext dbContext):base(dbContext) // Ask CLR for creating object from DbContext
         {
             //_dbContext = new AppDbContext(); // With this line the exception is ended
-            _dbContext = dbContext;
+            //_dbContext = dbContext;
         }
-
-        public int Add(Employee employee)
+        public IQueryable<Employee> GetEmployeeByAddress(string address)
         {
-            _dbContext.Employees.Add(employee); // null reference exception
-            return _dbContext.SaveChanges(); // will make sql script for all changes 
-        }
-
-        public int Delete(Employee employee)
-        {
-            _dbContext.Employees.Remove(employee);
-            return _dbContext.SaveChanges();
-        }
-
-        public IEnumerable<Employee> GetAll()
-        {
-            return _dbContext.Employees.AsNoTracking().ToList();
-        }
-
-        public Employee GetById(int id)
-        {
-            return _dbContext.Employees.Find(id);
-        }
-
-        public int Update(Employee employee)
-        {
-            _dbContext.Employees.Update(employee);
-            return _dbContext.SaveChanges();
+            return _dbContext.Employees.Where(E => E.Address.ToLower().Contains(address.ToLower()));
         }
     }
 }

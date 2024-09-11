@@ -1,0 +1,56 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Are You Sure You Want To Delete This Employee?</h1>
+
+<br />
+<br />
+
+<form asp-action="Delete" asp-route-Id="@Model.Id">
+    <div>
+        <label asp-for="Name" class="col-form-label"></label>
+        <input type="text" asp-for="Name" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="Age" class="col-form-label"></label>
+        <input type="text" asp-for="Age" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="Address" class="col-form-label"></label>
+        <input type="text" asp-for="Address" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="Salary" class="col-form-label"></label>
+        <input type="text" asp-for="Salary" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="IsActive" class="col-form-label"></label>
+        <input asp-for="IsActive" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="Gender" class="col-form-label"></label>
+        <input asp-for="Gender" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="Email" class="col-form-label"></label>
+        <input type="text" asp-for="Email" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="PhoneNumber" class="col-form-label"></label>
+        <input type="text" asp-for="PhoneNumber" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="IsDeleted" class="col-form-label"></label>
+        <input asp-for="IsDeleted" class="form-control" readonly />
+    </div>
+    <div>
+        <label asp-for="HireDate" class="col-form-label"></label>
+        <input asp-for="HireDate" class="form-control" readonly />
+    </div>
+
+    <input type="submit" value="Delete" class="btn btn-danger mt-5">
+    <a asp-action="Index" class="btn btn-light mt-5">Cancel</a>
+</form>
+

@@ -5,102 +5,84 @@ using ProjectMVC.BLL.Interfaces;
 using ProjectMVC.BLL.Repositories;
 using ProjectMVC.DAL.Models;
 using System;
+using System.Xml.Schema;
 
 namespace ProjectMVC.PL.Controllers
 {
-    public class DepartmentController : Controller
+    public class EmployeeController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly IWebHostEnvironment _env;
 
-        //private readonly IDepartmentRepository _repository;
-
-        public DepartmentController(IDepartmentRepository departmentRepository, IWebHostEnvironment env)
+        public EmployeeController(IEmployeeRepository repository, IWebHostEnvironment env) 
         {
-            _departmentRepository = departmentRepository;
+            _employeeRepository = repository;
             _env = env;
-            //DepartmentRepository = departmentRepository;
-            //_repository = departmentRepository;
-        }
-
-        //public IDepartmentRepository DepartmentRepository { get; }
+        } 
         public IActionResult Index()
         {
-            // GetAll
-            var department =_departmentRepository.GetAll();
-            return View(department);
+            var employees = _employeeRepository.GetAll();
+            return View(employees);
         }
-        // Get
-        public IActionResult Create()
+
+        public IActionResult Create() 
         {
-            return View();
+            return View();        
         }
-        
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create(Department department) 
+        public IActionResult Create(Employee employee)
         {
-            if (ModelState.IsValid) 
-            { 
-                var count = _departmentRepository.Add(department);
+            if (ModelState.IsValid)
+            {
+                var count = _employeeRepository.Add(employee);
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View(department);
+            return View(employee);
         }
 
         public IActionResult Details(int? id, string viewName = "Details")
         {
-            if(!id.HasValue)
+            if (!id.HasValue)
             {
                 return BadRequest(); //400
             }
-            var department = _departmentRepository.GetById(id.Value);
-            if (department == null)
+            var employee = _employeeRepository.GetById(id.Value);
+            if (employee == null)
             {
                 return NotFound(); //404
             }
-            return View(viewName, department);
+            return View(viewName, employee);
         }
 
         public IActionResult Edit(int? id)
         {
-            //if (!id.HasValue)
-            //{
-            //    return BadRequest(); //400
-            //}
-            //var department = _departmentRepository.GetById(id.Value);
-            //if (department == null)
-            //{
-            //    return NotFound(); //404
-            //}
-            //return View(department);
-
-            return Details(id,"Edit"); // this for enhance repeated code
+            return Details(id, "Edit"); 
         }
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id , Department department) 
+        public IActionResult Edit([FromRoute] int id, Employee employee)
         {
-            if (id != department.Id)
+            if (id != employee.Id)
             {
                 return BadRequest();
             }
 
             if (!ModelState.IsValid)
             {
-                return View(department);
+                return View(employee);
             }
 
             try
             {
-                _departmentRepository.Update(department);
+                _employeeRepository.Update(employee);
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 if (_env.IsDevelopment())
                 {
@@ -110,7 +92,7 @@ namespace ProjectMVC.PL.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "An Error Occured while update Department");
                 }
-                return View(department);
+                return View(employee);
             }
         }
 
@@ -121,11 +103,11 @@ namespace ProjectMVC.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Department department) 
+        public IActionResult Delete(Employee employee)
         {
             try
             {
-                _departmentRepository.Delete(department);
+                _employeeRepository.Delete(employee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -139,7 +121,7 @@ namespace ProjectMVC.PL.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "An Error Occured while Delete Department");
                 }
-                return View(department);
+                return View(employee);
             }
         }
     }
