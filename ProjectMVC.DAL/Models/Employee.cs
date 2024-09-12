@@ -24,13 +24,13 @@ namespace ProjectMVC.DAL.Models
     {
         [Required(ErrorMessage = "Name is Required!")]
         [MaxLength(50, ErrorMessage = "Max Length of the name is 50")]
-        [MinLength(3, ErrorMessage = "Min Length of the name is 4")]
+        [MinLength(3, ErrorMessage = "Min Length of the name is 3")]
         public string Name { get; set; }
 
         [Range(21,60)]
         public int? Age { get; set; }
 
-        [RegularExpression(@"^[0-9]{1,3}-[a-zA-Z]{4,10}-[a-zA-Z]{5,10}$"
+        [RegularExpression(@"^[0-9]{1,3}-[a-zA-Z]{4,10}-[a-zA-Z]{4,10}-[a-zA-Z]{5,10}$"
            , ErrorMessage = "Address Must Be Like 123-street-city-country")]
         public string Address { get; set; }
 

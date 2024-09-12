@@ -21,7 +21,15 @@ namespace ProjectMVC.PL.Controllers
         } 
         public IActionResult Index()
         {
+            TempData.Keep();
             var employees = _employeeRepository.GetAll();
+            // Extra info
+            // Binding through view's Dictionary : transer data from Action to View
+            // 1. ViewData
+            ViewData["Message"] = "Hello ViewData";
+            // 2. ViewBag
+            ViewBag.Message = "Hello ViewBag";
+
             return View(employees);
         }
 
@@ -33,13 +41,20 @@ namespace ProjectMVC.PL.Controllers
         [HttpPost]
         public IActionResult Create(Employee employee)
         {
+            // 3. TempData => Action To Action
             if (ModelState.IsValid)
             {
                 var count = _employeeRepository.Add(employee);
                 if (count > 0)
                 {
-                    return RedirectToAction(nameof(Index));
+                    TempData["Message"] = "Employee Created successfully";
                 }
+                else
+                {
+                    TempData["Message"] = "An Error Occurred";
+                }
+                return RedirectToAction(nameof(Index));
+
             }
             return View(employee);
         }
