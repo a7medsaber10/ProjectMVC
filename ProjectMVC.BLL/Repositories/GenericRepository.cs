@@ -20,16 +20,16 @@ namespace ProjectMVC.BLL.Repositories
             //_dbContext = new AppDbContext(); // With this line the exception is ended
             _dbContext = dbContext;
         }
-        public int Add(T item)
+        public void Add(T item)
         {
             _dbContext.Set<T>().Add(item); // null reference exception
-            return _dbContext.SaveChanges(); // will make sql script for all changes 
+            //return _dbContext.SaveChanges(); // will make sql script for all changes 
         }
 
-        public int Delete(T item)
+        public void Delete(T item)
         {
             _dbContext.Set<T>().Remove(item);
-            return _dbContext.SaveChanges();
+            //return _dbContext.SaveChanges();
         }
 
         public IEnumerable<T> GetAll()
@@ -49,10 +49,10 @@ namespace ProjectMVC.BLL.Repositories
             return _dbContext.Set<T>().Find(id);
         }
 
-        public int Update(T item)
+        public void Update(T item)
         {
             _dbContext.Set<T>().Update(item);
-            return _dbContext.SaveChanges();
+            //return _dbContext.SaveChanges();
         }
     }
 }

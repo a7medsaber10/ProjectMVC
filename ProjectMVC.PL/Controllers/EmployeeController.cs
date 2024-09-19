@@ -15,15 +15,17 @@ namespace ProjectMVC.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        //private readonly IEmployeeRepository _employeeRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
 
         //private readonly IDepartmentRepository _departmentRepository;
 
-        public EmployeeController(IEmployeeRepository repository, IWebHostEnvironment env, IMapper mapper/*, IDepartmentRepository departmentRepository*/) 
+        public EmployeeController(IUnitOfWork unitOfWork, IWebHostEnvironment env, IMapper mapper/*, IDepartmentRepository departmentRepository*/) 
         {
-            _employeeRepository = repository;
+            //_employeeRepository = repository;
+            _unitOfWork = unitOfWork;
             _env = env;
             _mapper = mapper;
             //_departmentRepository = departmentRepository;
@@ -34,14 +36,14 @@ namespace ProjectMVC.PL.Controllers
             //TempData.Keep();
             if (string.IsNullOrEmpty(searchInput))
             {
-                var employees = _employeeRepository.GetAll();
+                var employees = _unitOfWork.EmployeeRepository.GetAll();
                 var mappedEmployee = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
                 return View(mappedEmployee);
 
             }
             else
             {
-                var employees = _employeeRepository.GetEmployeeByName(searchInput);
+                var employees = _unitOfWork.EmployeeRepository.GetEmployeeByName(searchInput);
                 var mappedEmployee = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employees);
                 return View(mappedEmployee);
             }
@@ -81,7 +83,9 @@ namespace ProjectMVC.PL.Controllers
                 //};
 
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                var count = _employeeRepository.Add(mappedEmployee);
+                _unitOfWork.EmployeeRepository.Add(mappedEmployee);
+
+                var count = _unitOfWork.Complete(); // SaveChanges()
                 if (count > 0)
                 {
                     TempData["Message"] = "Employee Created successfully";
@@ -102,7 +106,7 @@ namespace ProjectMVC.PL.Controllers
             {
                 return BadRequest(); //400
             }
-            var employee = _employeeRepository.GetById(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.GetById(id.Value);
             var mappedEmployee = _mapper.Map<Employee, EmployeeViewModel>(employee);
             //ViewBag.Departments = _departmentRepository.GetAll();
 
@@ -136,7 +140,8 @@ namespace ProjectMVC.PL.Controllers
             try
             {
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _employeeRepository.Update(mappedEmployee);
+                _unitOfWork.EmployeeRepository.Update(mappedEmployee);
+                _unitOfWork.Complete(); // SaveChanges()
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -166,7 +171,8 @@ namespace ProjectMVC.PL.Controllers
             try
             {
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _employeeRepository.Delete(mappedEmployee);
+                _unitOfWork.EmployeeRepository.Delete(mappedEmployee);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

@@ -13,10 +13,10 @@ namespace ProjectMVC.BLL.Interfaces
 
         T GetById(int id);
 
-        int Add(T item);
+        void Add(T item);
 
-        int Update(T item);
+        void Update(T item);
 
-        int Delete(T item);
+        void Delete(T item);
     }
 }

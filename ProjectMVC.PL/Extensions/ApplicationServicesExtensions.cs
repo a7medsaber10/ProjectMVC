@@ -8,9 +8,9 @@ namespace ProjectMVC.PL.Extensions
     {
         public static IServiceCollection AddApplictionServices(this IServiceCollection services)
         {
-            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
+            //services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }

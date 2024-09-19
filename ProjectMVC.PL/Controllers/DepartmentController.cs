@@ -10,14 +10,16 @@ namespace ProjectMVC.PL.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        //private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
 
         //private readonly IDepartmentRepository _repository;
 
-        public DepartmentController(IDepartmentRepository departmentRepository, IWebHostEnvironment env)
+        public DepartmentController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
         {
-            _departmentRepository = departmentRepository;
+            //_departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
             _env = env;
             //DepartmentRepository = departmentRepository;
             //_repository = departmentRepository;
@@ -27,7 +29,7 @@ namespace ProjectMVC.PL.Controllers
         public IActionResult Index()
         {
             // GetAll
-            var department =_departmentRepository.GetAll();
+            var department = _unitOfWork.DepartmentRepository.GetAll();
             return View(department);
         }
         // Get
@@ -41,8 +43,9 @@ namespace ProjectMVC.PL.Controllers
         public IActionResult Create(Department department) 
         {
             if (ModelState.IsValid) 
-            { 
-                var count = _departmentRepository.Add(department);
+            {
+                _unitOfWork.DepartmentRepository.Add(department); // state added
+                var count = _unitOfWork.Complete();
                 if (count > 0)
                 {
                     return RedirectToAction(nameof(Index));
@@ -57,7 +60,7 @@ namespace ProjectMVC.PL.Controllers
             {
                 return BadRequest(); //400
             }
-            var department = _departmentRepository.GetById(id.Value);
+            var department = _unitOfWork.DepartmentRepository.GetById(id.Value);
             if (department == null)
             {
                 return NotFound(); //404
@@ -97,7 +100,8 @@ namespace ProjectMVC.PL.Controllers
 
             try
             {
-                _departmentRepository.Update(department);
+                _unitOfWork.DepartmentRepository.Update(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch(Exception ex) 
@@ -125,7 +129,8 @@ namespace ProjectMVC.PL.Controllers
         {
             try
             {
-                _departmentRepository.Delete(department);
+                _unitOfWork.DepartmentRepository.Delete(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
