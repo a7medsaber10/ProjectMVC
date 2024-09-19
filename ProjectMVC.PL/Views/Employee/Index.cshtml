@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Employee>
+﻿@model IEnumerable<EmployeeViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="alert alert-warning">
+@* <div class="alert alert-warning">
     @ViewData["Message"]
 </div>
 
@@ -16,13 +16,28 @@
     <div class="alert alert-primary">
         @TempData["Message"]
     </div>
-}
+} *@
+
+
 
 <h1>All Employees</h1>
 <br />
-<br />
 
-<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create New Employee</a>
+<div class="row justify-content-center align-items-center">
+    <div>
+        <a asp-controller="Employee" asp-action="Create" class="btn btn-outline-success">Create New Employee</a>
+    </div>
+    <div class="row col-10 justify-content-center align-items-center">
+        <form class="row col-8 justify-content-end" asp-action="Index">
+            <div class="col-8">
+                <input type="text" name="searchInput" placeholder="Search By Name" class="form-control" />
+            </div>
+            <div>
+                <input type="submit" value="Search" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
 
 @if(Model.Count() > 0)
 {
@@ -32,6 +47,7 @@
                 <th>@Html.DisplayNameFor(e => e.Name)</th>
                 <th>@Html.DisplayNameFor(e => e.Age)</th>
                 <th>@Html.DisplayNameFor(e => e.Address)</th>
+                <th>@Html.DisplayNameFor(e => e.Department)</th>
                 <th>@Html.DisplayNameFor(e => e.Salary)</th>
                 <th>@Html.DisplayNameFor(e => e.IsActive)</th>
                 <th>@Html.DisplayNameFor(e => e.Gender)</th>
@@ -48,6 +64,7 @@
                     <td>@Employee.Name</td>
                     <td>@Employee.Age</td>
                     <td>@Employee.Address</td>
+                    <td>@Employee.Department?.Name</td>
                     <td>@Html.DisplayFor(M => Employee.Salary)</td>
                     <td>@Html.DisplayFor(M => Employee.IsActive)</td>
                     <td>@Employee.Gender</td>

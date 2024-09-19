@@ -5,6 +5,7 @@ using ProjectMVC.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,12 @@ namespace ProjectMVC.BLL.Repositories
         public IQueryable<Employee> GetEmployeeByAddress(string address)
         {
             return _dbContext.Employees.Where(E => E.Address.ToLower().Contains(address.ToLower()));
+        }
+
+        public IQueryable<Employee> GetEmployeeByName(string name)
+        {
+            return _dbContext.Employees.Where(E => E.Name.ToLower().Contains(name.ToLower()));
+
         }
     }
 }

@@ -21,6 +21,10 @@ namespace ProjectMVC.DAL.Data.Configurations
                     (Gender) => Gender.ToString(), // Label of the member to represent it in DB
                     (GenderAsString) => (Gender) Enum.Parse(typeof(Gender),GenderAsString)
                 );
+
+            builder.Property(E => E.Name)
+                .IsRequired(true)
+                .HasMaxLength(50);
         }
     }
 }

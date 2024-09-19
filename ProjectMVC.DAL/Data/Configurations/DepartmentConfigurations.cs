@@ -14,6 +14,13 @@ namespace ProjectMVC.DAL.Data.Configurations
         public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.Property(D => D.Id).UseIdentityColumn(10,10);
+
+            builder.HasMany(d => d.Employees)
+                   .WithOne(e => e.Department)
+                   .OnDelete(DeleteBehavior.Cascade);
+        
         }
+
+
     }
 }
