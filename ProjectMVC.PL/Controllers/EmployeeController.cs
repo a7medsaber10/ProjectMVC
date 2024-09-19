@@ -103,19 +103,21 @@ namespace ProjectMVC.PL.Controllers
                 return BadRequest(); //400
             }
             var employee = _employeeRepository.GetById(id.Value);
+            var mappedEmployee = _mapper.Map<Employee, EmployeeViewModel>(employee);
             //ViewBag.Departments = _departmentRepository.GetAll();
 
             if (employee == null)
             {
                 return NotFound(); //404
             }
-            return View(viewName, employee);
+            return View(viewName, mappedEmployee);
         }
 
         public IActionResult Edit(int? id)
         {
             return Details(id, "Edit"); 
         }
+
 
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -155,6 +157,7 @@ namespace ProjectMVC.PL.Controllers
         {
             return Details(id, "Delete");
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
