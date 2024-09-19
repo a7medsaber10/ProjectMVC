@@ -21,7 +21,7 @@ namespace ProjectMVC.PL.Helpers
             string filePath = Path.Combine(folderPath, fileName);
 
             // 4. Save file as streams
-            var fileStream = new FileStream(filePath, FileMode.Create);
+            using var fileStream = new FileStream(filePath, FileMode.Create);
             file.CopyTo(fileStream);
 
             // 5. return file name

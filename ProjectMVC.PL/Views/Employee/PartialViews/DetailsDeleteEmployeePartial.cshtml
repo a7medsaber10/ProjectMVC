@@ -1,4 +1,8 @@
 ﻿@model EmployeeViewModel
+
+<div>
+	<img src="~/Files/Images/@Model.ImageName"  class="img-fluid rounded-circle mb-2" width="100"/>
+</div>
 <div>
     <label asp-for="Name" class="col-form-label"></label>
     <input type="text" asp-for="Name" class="form-control" readonly />

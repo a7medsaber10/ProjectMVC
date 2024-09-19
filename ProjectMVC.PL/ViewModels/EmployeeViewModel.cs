@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace ProjectMVC.PL.ViewModels
 {
@@ -59,6 +60,9 @@ namespace ProjectMVC.PL.ViewModels
 
         public int? DepartmentId { get; set; } // foriegn key column
 
+        public IFormFile Image { get; set; }
+
+        public string ImageName { get; set; }
         //public EmployeeType EmployeeType { get; set; }
     }
 }

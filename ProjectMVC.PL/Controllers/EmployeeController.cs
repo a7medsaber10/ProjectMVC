@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using ProjectMVC.BLL.Interfaces;
 using ProjectMVC.BLL.Repositories;
 using ProjectMVC.DAL.Models;
+using ProjectMVC.PL.Helpers;
 using ProjectMVC.PL.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,7 @@ namespace ProjectMVC.PL.Controllers
                 //    IsActive = employeeVM.IsActive,
                 //    HireDate = employeeVM.HireDate
                 //};
-
+                employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "Images");
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                 _unitOfWork.EmployeeRepository.Add(mappedEmployee);
 
@@ -139,6 +140,7 @@ namespace ProjectMVC.PL.Controllers
 
             try
             {
+                employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "Images");
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                 _unitOfWork.EmployeeRepository.Update(mappedEmployee);
                 _unitOfWork.Complete(); // SaveChanges()

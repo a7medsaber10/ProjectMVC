@@ -49,6 +49,8 @@ namespace ProjectMVC.DAL.Models
 
         public int? DepartmentId { get; set; } // foriegn key column
 
+        public string ImageName { get; set; }
+
         //public EmployeeType EmployeeType { get; set; }
     }
 }
