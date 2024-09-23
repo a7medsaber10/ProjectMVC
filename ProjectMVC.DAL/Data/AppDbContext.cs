@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProjectMVC.DAL.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
