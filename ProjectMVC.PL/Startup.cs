@@ -49,17 +49,17 @@ namespace ProjectMVC.PL
             //services.AddScoped<SignInManager<ApplicationUser>>();
             //services.AddScoped<RoleManager<IdentityRole>>();
             services.AddIdentity<ApplicationUser, IdentityRole>(config => {
-                config.Password.RequiredUniqueChars = 2;
+                //config.Password.RequiredUniqueChars = 2;
                 config.Password.RequireDigit = true;
                 config.Password.RequireLowercase = true;
                 config.Password.RequireUppercase = true;
-                config.Password.RequireNonAlphanumeric = true;
+                config.Password.RequireNonAlphanumeric = false;
 
-                config.User.RequireUniqueEmail = true;
+                //config.User.RequireUniqueEmail = true;
 
-                config.Lockout.MaxFailedAccessAttempts = 5;
-                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            }).AddEntityFrameworkStores<AppDbContext>();
+                //config.Lockout.MaxFailedAccessAttempts = 5;
+                //config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
               
         }
 
@@ -81,6 +81,7 @@ namespace ProjectMVC.PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

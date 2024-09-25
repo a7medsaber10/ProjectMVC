@@ -50,6 +50,37 @@ namespace ProjectMVC.PL.Controllers
             return View(viewModel);
         }
         #endregion
+
+        #region Sign In
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignInViewModel viewModel) 
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(viewModel.Email);
+                if (user is not null)
+                {
+                    bool flag = await _userManager.CheckPasswordAsync(user, viewModel.Password);
+                    if (flag)
+                    {
+                        var result = await _signInManager.PasswordSignInAsync(user, viewModel.Password, viewModel.RememberMe, false);
+                        if (result.Succeeded)
+                        {
+                            return RedirectToAction(nameof(HomeController.Index), "Home");
+                        }
+
+                    }
+                }
+                ModelState.AddModelError(string.Empty, "Invalid Login");
+            }
+            return View(viewModel);
+        }
+        #endregion
     }
 }
 
