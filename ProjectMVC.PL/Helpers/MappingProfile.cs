@@ -9,6 +9,7 @@ namespace ProjectMVC.PL.Helpers
         public MappingProfile()
         {
             CreateMap<EmployeeViewModel, Employee>().ReverseMap();
+            CreateMap<ApplicationUser, UserViewModel>().ReverseMap();
         }
     }
 }

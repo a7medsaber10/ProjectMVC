@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectMVC.DAL.Models;
@@ -13,12 +14,14 @@ namespace ProjectMVC.PL.Controllers
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
 
-		public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper)
 		{
 			_userManager = userManager;
 			_roleManager = roleManager;
-		}
+            _mapper = mapper;
+        }
 
 		public async Task<IActionResult> Index(string email)
 		{
@@ -27,8 +30,8 @@ namespace ProjectMVC.PL.Controllers
 				var users = await _userManager.Users.Select(u => new UserViewModel()
 				{
 					Id = u.Id,
-					FName = u.FirstName,
-					LName = u.LastName,
+					FirstName = u.FirstName,
+					LastName = u.LastName,
 					Email = u.Email,
 					PhoneNumber = u.PhoneNumber,
 					Roles = _userManager.GetRolesAsync(u).Result
@@ -43,8 +46,8 @@ namespace ProjectMVC.PL.Controllers
 					var mappedUser = new UserViewModel()
 					{
 						Id = user.Id,
-						FName = user.FirstName,
-						LName = user.LastName,
+						FirstName = user.FirstName,
+						LastName = user.LastName,
 						Email = user.Email,
 						PhoneNumber = user.PhoneNumber,
 						Roles = _userManager.GetRolesAsync(user).Result
@@ -54,5 +57,24 @@ namespace ProjectMVC.PL.Controllers
             }
             return View(Enumerable.Empty<UserViewModel>());
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Details(string id, string viewName = "Details")
+		{
+			if (id is null)
+			{
+				return BadRequest();
+			}
+			var User = await _userManager.FindByIdAsync(id);
+
+
+            if (User is null)
+            {
+                return NotFound();
+            }
+			var mappedUser = _mapper.Map<ApplicationUser , UserViewModel>(User);
+
+			return View(viewName, mappedUser);
+        }
 	}
 }

@@ -30,8 +30,8 @@
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(u => u.Id)</th>
-                <th>@Html.DisplayNameFor(u => u.FName)</th>
-                <th>@Html.DisplayNameFor(u => u.LName)</th>
+                <th>@Html.DisplayNameFor(u => u.FirstName)</th>
+                <th>@Html.DisplayNameFor(u => u.LastName)</th>
                 <th>@Html.DisplayNameFor(u => u.Email)</th>
                 <th>@Html.DisplayNameFor(u => u.PhoneNumber)</th>
                 <th>@Html.DisplayNameFor(u => u.Roles)</th>
@@ -46,8 +46,8 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(M => User.Id)</td>
-                    <td>@Html.DisplayFor(M => User.FName)</td>
-                    <td>@Html.DisplayFor(M => User.LName)</td>
+                    <td>@Html.DisplayFor(M => User.FirstName)</td>
+                    <td>@Html.DisplayFor(M => User.LastName)</td>
                     <td>@Html.DisplayFor(M => User.Email)</td>
                     <td>@Html.DisplayFor(M => User.PhoneNumber)</td>
                     <td>@string.Join(" ", User.Roles)</td>
