@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectMVC.DAL.Models;
+using ProjectMVC.PL.Helpers;
 using ProjectMVC.PL.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,5 +78,65 @@ namespace ProjectMVC.PL.Controllers
 
 			return View(viewName, mappedUser);
         }
-	}
+
+		[HttpGet]
+		public Task<IActionResult> Edit(string id)
+		{
+			return Details(id, "Edit");
+		}
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromRoute] string id, UserViewModel userVM)
+        {
+            if (id != userVM.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(userVM);
+            }
+
+            try
+            {
+                var User = await _userManager.FindByIdAsync(id);
+
+                User.PhoneNumber = userVM.PhoneNumber;
+                User.FirstName = userVM.FirstName;
+
+                //var mappedEmployee = _mapper.Map<UserViewModel, ApplicationUser>(userVM);
+                var result = await _userManager.UpdateAsync(User);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+				return BadRequest();
+            }
+        }
+
+		[HttpGet]
+		public Task<IActionResult> Delete(string id)
+		{
+			return Details(id, "Delete");
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(UserViewModel UserVM)
+        {
+            try
+            {
+                var User = await _userManager.FindByIdAsync(UserVM.Id);
+                await _userManager.DeleteAsync(User);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+    }
 }
