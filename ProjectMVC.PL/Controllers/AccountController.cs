@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using ProjectMVC.DAL.Models;
 using ProjectMVC.PL.Helpers;
 using ProjectMVC.PL.ViewModels;
@@ -10,14 +11,23 @@ namespace ProjectMVC.PL.Controllers
 {
     public class AccountController : Controller
     {
-		private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _configuration;
+        private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMailSettings _mailSettings;
 
-		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(
+            IConfiguration configuration,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IMailSettings mailSettings
+        )
         {
-			_userManager = userManager;
+            _configuration = configuration;
+            _userManager = userManager;
 			_signInManager = signInManager;
-		}
+            _mailSettings = mailSettings;
+        }
 
         #region Sign Up
         [HttpGet]
@@ -106,8 +116,8 @@ namespace ProjectMVC.PL.Controllers
                 var user = await _userManager.FindByEmailAsync(viewModel.Email);
                 if (user is not null)
                 {
-                    var token = _userManager.GeneratePasswordResetTokenAsync(user);
-                    var ResetPasswordUrl = Url.Action("ResetPassword", "Account", new { email = viewModel.Email , token = token});
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var ResetPasswordUrl = Url.Action("ResetPassword", "Account", new { email = user.Email , token = token}, Request.Scheme, Request.Host.ToString());
 
                     var email = new Email()
                     {
@@ -116,8 +126,8 @@ namespace ProjectMVC.PL.Controllers
                         Recepients = viewModel.Email
                     };
 
-                    EmailSettings.SendEmail(email);
-                    RedirectToAction(nameof(CheckYourInbox));
+                    _mailSettings.SendEmail(email);
+                    return Redirect(nameof(CheckYourInbox));
                 }
                 ModelState.AddModelError(string.Empty, "Invalid Email");
             }
@@ -140,7 +150,7 @@ namespace ProjectMVC.PL.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetPssword(ResetPasswordViewModel viewModel)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
             {

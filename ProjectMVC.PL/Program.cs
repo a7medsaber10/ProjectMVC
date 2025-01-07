@@ -11,6 +11,7 @@ using ProjectMVC.DAL.Data;
 using ProjectMVC.DAL.Models;
 using ProjectMVC.PL.Extensions;
 using ProjectMVC.PL.Helpers;
+using ProjectMVC.PL.Services.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,10 @@ namespace ProjectMVC.PL
                 //config.Lockout.MaxFailedAccessAttempts = 5;
                 //config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            Builder.Services.Configure<Services.Settings.MailSettings>(Builder.Configuration.GetSection("MailSettings"));
+
+            Builder.Services.AddTransient<IMailSettings, Helpers.MailSettings>();
             #endregion
 
             var app = Builder.Build();
